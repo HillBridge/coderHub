@@ -22,7 +22,7 @@ class UserController {
     } catch (error) {
       return (ctx.body = {
         code: 500,
-        message: "创建用户失败",
+        message: error.message,
       });
     }
   }
