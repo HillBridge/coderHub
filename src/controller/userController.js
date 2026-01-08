@@ -5,12 +5,12 @@ class UserController {
     // 获取请求
     const userInfo = ctx.request.body;
 
-    if (!userInfo.username || !userInfo.password) {
-      return (ctx.body = {
-        code: 400,
-        message: "用户名或密码不能为空",
-      });
-    }
+    // if (!userInfo.username || !userInfo.password) {
+    //   return (ctx.body = {
+    //     code: 400,
+    //     message: "用户名或密码不能为空",
+    //   });
+    // }
 
     // 数据库操作
     try {
