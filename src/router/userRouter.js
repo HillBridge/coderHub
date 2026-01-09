@@ -3,8 +3,13 @@ const userRouter = new Router({
   prefix: "/user",
 });
 const userController = require("../controller/userController");
-const { verifyUser } = require("../middleware/userMiddleware");
+const { verifyUser, handlePassword } = require("../middleware/userMiddleware");
 
-userRouter.post("/register", verifyUser, userController.register);
+userRouter.post(
+  "/register",
+  verifyUser,
+  handlePassword,
+  userController.register
+);
 
 module.exports = userRouter;
