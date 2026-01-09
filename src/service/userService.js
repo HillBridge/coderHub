@@ -12,6 +12,12 @@ class UserService {
     const [result] = await pool.execute(statement, [username]);
     return result;
   }
+
+  async getPasswordByUsername(username) {
+    const statement = `SELECT password FROM users WHERE username = ?`;
+    const [result] = await pool.execute(statement, [username]);
+    return result;
+  }
 }
 
 module.exports = new UserService();
