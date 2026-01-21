@@ -1,0 +1,28 @@
+const errorType = require("../constants/errorType");
+const permissionService = require("../service/permissionService");
+
+const verifyPermission = async (ctx, next) => {
+  const { id: momentId } = ctx.request.body;
+  const { id: userId } = ctx.user;
+
+  if (!momentId || !userId) {
+    return ctx.app.emit("error", new Error(errorType.BAD_REQUEST), ctx);
+  }
+
+  try {
+    const result = await permissionService.checkPermission(momentId, userId);
+    if (result.length < 1) {
+      return ctx.app.emit("error", new Error(errorType.NO_PERMISSION), ctx);
+    }
+  } catch (error) {
+    return (ctx.body = {
+      code: 500,
+      message: error.message,
+    });
+  }
+  await next();
+};
+
+module.exports = {
+  verifyPermission,
+};

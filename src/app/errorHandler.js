@@ -24,6 +24,9 @@ const errorHandler = (err, ctx) => {
     case errorTypes.BAD_REQUEST:
       message = "请求错误";
       break;
+    case errorTypes.NO_PERMISSION:
+      message = "没有权限";
+      break;
     default:
       status = 404;
       break;

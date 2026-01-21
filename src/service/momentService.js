@@ -22,6 +22,12 @@ class MomentService {
     const [result] = await pool.execute(statement, [pageNum, pageSize]);
     return result;
   }
+
+  async update({ momentId, content }) {
+    const statement = `UPDATE moments SET content = ? WHERE id = ?`;
+    const [result] = await pool.execute(statement, [content, momentId]);
+    return result;
+  }
 }
 
 module.exports = new MomentService();

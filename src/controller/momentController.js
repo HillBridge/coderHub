@@ -76,6 +76,26 @@ class MomentController {
       };
     }
   }
+
+  async update(ctx, next) {
+    const { id: momentId, content } = ctx.request.body;
+    if (!momentId || !content) {
+      return ctx.app.emit("error", new Error(errorType.BAD_REQUEST), ctx);
+    }
+
+    try {
+      await momentService.update({ momentId, content });
+      ctx.body = {
+        code: 200,
+        message: "更新动态成功!!",
+      };
+    } catch (error) {
+      ctx.body = {
+        code: 500,
+        message: error.message,
+      };
+    }
+  }
 }
 
 module.exports = new MomentController();
