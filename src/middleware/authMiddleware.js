@@ -21,6 +21,8 @@ const login = async (ctx, next) => {
     if (result.length < 1) {
       return ctx.app.emit("error", new Error(errorType.USER_NOT_FOUND), ctx);
     }
+
+    ctx.user = result[0];
   } catch (error) {
     return (ctx.body = {
       code: 500,
