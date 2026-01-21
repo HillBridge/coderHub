@@ -54,6 +54,28 @@ class MomentController {
       };
     }
   }
+
+  async list(ctx, next) {
+    const { pageNum = 1, pageSize = 10 } = ctx.query;
+
+    if (pageNum <= 0 || pageSize <= 0) {
+      return ctx.app.emit("error", new Error(errorType.BAD_REQUEST), ctx);
+    }
+    try {
+      const result = await momentService.getMomentList({ pageNum, pageSize });
+      ctx.body = {
+        code: 200,
+        message: "获取动态列表成功!!",
+        data: result,
+        total: result.length,
+      };
+    } catch (error) {
+      ctx.body = {
+        code: 500,
+        message: error.message,
+      };
+    }
+  }
 }
 
 module.exports = new MomentController();
