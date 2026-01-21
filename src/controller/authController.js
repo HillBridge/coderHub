@@ -14,6 +14,13 @@ class AuthController {
       message: "登录成功",
     };
   }
+
+  async success(ctx, next) {
+    ctx.body = {
+      code: 200,
+      message: "验证成功",
+    };
+  }
 }
 
 module.exports = new AuthController();

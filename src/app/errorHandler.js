@@ -18,6 +18,9 @@ const errorHandler = (err, ctx) => {
     case errorTypes.PASSWORD_INCORRECT:
       message = "密码不正确";
       break;
+    case errorTypes.UNAUTHORIZED:
+      message = "未授权";
+      break;
     default:
       status = 404;
       break;
