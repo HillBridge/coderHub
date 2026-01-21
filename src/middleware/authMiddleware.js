@@ -61,7 +61,7 @@ const verifyPassword = async (ctx, next) => {
 };
 
 const verifyToken = async (ctx, next) => {
-  const token = ctx.headers.authorization.replace("Bearer ", "");
+  const token = ctx.headers?.authorization?.replace("Bearer ", "");
   if (!token) {
     return ctx.app.emit("error", new Error(errorType.UNAUTHORIZED), ctx);
   }

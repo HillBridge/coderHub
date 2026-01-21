@@ -21,6 +21,9 @@ const errorHandler = (err, ctx) => {
     case errorTypes.UNAUTHORIZED:
       message = "未授权";
       break;
+    case errorTypes.BAD_REQUEST:
+      message = "请求错误";
+      break;
     default:
       status = 404;
       break;
