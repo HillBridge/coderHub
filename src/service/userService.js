@@ -18,6 +18,12 @@ class UserService {
     const [result] = await pool.execute(statement, [username]);
     return result;
   }
+
+  async checkUserExist(userId) {
+    const statement = `SELECT * FROM users WHERE id = ?`;
+    const [result] = await pool.execute(statement, [userId]);
+    return result;
+  }
 }
 
 module.exports = new UserService();
