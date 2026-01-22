@@ -12,6 +12,17 @@ class CommentService {
     const [result] = await pool.execute(statement, [momentId]);
     return result;
   }
+
+  async reply({ userId, momentId, commentId, content }) {
+    const statement = `INSERT INTO comments (content, user_id, moment_id, comment_id) VALUES (?, ?, ?, ?)`;
+    const [result] = await pool.execute(statement, [
+      content,
+      userId,
+      momentId,
+      commentId,
+    ]);
+    return result;
+  }
 }
 
 module.exports = new CommentService();

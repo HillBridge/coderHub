@@ -25,6 +25,28 @@ class CommentController {
       };
     }
   }
+
+  async reply(ctx, next) {
+    const { id: userId } = ctx.user;
+    const { content, momentId, commentId } = ctx.request.body;
+
+    if (!content || !momentId || !commentId) {
+      return ctx.app.emit("error", new Error(errorType.BAD_REQUEST), ctx);
+    }
+
+    try {
+      await commentService.reply({ userId, momentId, commentId, content });
+      ctx.body = {
+        code: 200,
+        message: "回复评论成功!!",
+      };
+    } catch (error) {
+      ctx.body = {
+        code: 500,
+        message: error.message,
+      };
+    }
+  }
 }
 
 module.exports = new CommentController();

@@ -13,4 +13,11 @@ commentRouter.post(
   commentController.create
 );
 
+commentRouter.post(
+  "/reply",
+  verifyToken,
+  verifyPermission,
+  commentController.reply
+);
+
 module.exports = commentRouter;
