@@ -28,6 +28,18 @@ class MomentService {
     const [result] = await pool.execute(statement, [content, momentId]);
     return result;
   }
+
+  async checkPermission(momentId, userId) {
+    const statement = `SELECT * FROM moments WHERE id = ? AND user_id = ?`;
+    const [result] = await pool.execute(statement, [momentId, userId]);
+    return result;
+  }
+
+  async remove({ momentId }) {
+    const statement = `DELETE FROM moments WHERE id = ?`;
+    const [result] = await pool.execute(statement, [momentId]);
+    return result;
+  }
 }
 
 module.exports = new MomentService();

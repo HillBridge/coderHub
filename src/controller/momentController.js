@@ -96,6 +96,26 @@ class MomentController {
       };
     }
   }
+
+  async remove(ctx, next) {
+    const { id: momentId } = ctx.request.body;
+    if (!momentId) {
+      return ctx.app.emit("error", new Error(errorType.BAD_REQUEST), ctx);
+    }
+
+    try {
+      await momentService.remove({ momentId });
+      ctx.body = {
+        code: 200,
+        message: "删除动态成功!!",
+      };
+    } catch (error) {
+      ctx.body = {
+        code: 500,
+        message: error.message,
+      };
+    }
+  }
 }
 
 module.exports = new MomentController();

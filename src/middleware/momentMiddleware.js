@@ -1,5 +1,5 @@
 const errorType = require("../constants/errorType");
-const permissionService = require("../service/permissionService");
+const momentService = require("../service/momentService");
 
 const verifyPermission = async (ctx, next) => {
   const { id: momentId } = ctx.request.body;
@@ -8,9 +8,8 @@ const verifyPermission = async (ctx, next) => {
   if (!momentId || !userId) {
     return ctx.app.emit("error", new Error(errorType.BAD_REQUEST), ctx);
   }
-
   try {
-    const result = await permissionService.checkPermission(momentId, userId);
+    const result = await momentService.checkPermission(momentId, userId);
     if (result.length < 1) {
       return ctx.app.emit("error", new Error(errorType.NO_PERMISSION), ctx);
     }
