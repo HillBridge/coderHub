@@ -20,4 +20,6 @@ commentRouter.post(
   commentController.reply
 );
 
+commentRouter.patch("/update", verifyToken, commentController.update);
+
 module.exports = commentRouter;

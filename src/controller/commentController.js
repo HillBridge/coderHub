@@ -47,6 +47,26 @@ class CommentController {
       };
     }
   }
+
+  async update(ctx, next) {
+    const { commentId, content } = ctx.request.body;
+    if (!commentId || !content) {
+      return ctx.app.emit("error", new Error(errorType.BAD_REQUEST), ctx);
+    }
+
+    try {
+      await commentService.update({ commentId, content });
+      ctx.body = {
+        code: 200,
+        message: "更新评论成功!!",
+      };
+    } catch (error) {
+      ctx.body = {
+        code: 500,
+        message: error.message,
+      };
+    }
+  }
 }
 
 module.exports = new CommentController();

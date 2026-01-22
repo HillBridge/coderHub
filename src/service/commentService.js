@@ -23,6 +23,12 @@ class CommentService {
     ]);
     return result;
   }
+
+  async update({ commentId, content }) {
+    const statement = `UPDATE comments SET content = ? WHERE id = ?`;
+    const [result] = await pool.execute(statement, [content, commentId]);
+    return result;
+  }
 }
 
 module.exports = new CommentService();
