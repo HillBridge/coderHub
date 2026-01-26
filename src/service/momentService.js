@@ -29,7 +29,7 @@ class MomentService {
     return result;
   }
 
-  async checkPermission(momentId, userId) {
+  async checkCommentPermission(momentId) {
     const statement = `SELECT * FROM moments WHERE id = ? AND user_id = ?`;
     const [result] = await pool.execute(statement, [momentId, userId]);
     return result;

@@ -1,7 +1,7 @@
 const errorType = require("../constants/errorType");
 const commentService = require("../service/commentService");
 
-const verifyPermission = async (ctx, next) => {
+const verifyCommentPermission = async (ctx, next) => {
   const { momentId } = ctx.request.body;
   const { id: userId } = ctx.user;
 
@@ -10,7 +10,7 @@ const verifyPermission = async (ctx, next) => {
   }
   // 判断动态是否存在
   try {
-    const result = await commentService.checkMomentPermission(momentId);
+    const result = await commentService.checkCommentPermission(momentId);
     if (result.length < 1) {
       return ctx.app.emit("error", new Error(errorType.NO_PERMISSION), ctx);
     }
@@ -24,5 +24,5 @@ const verifyPermission = async (ctx, next) => {
 };
 
 module.exports = {
-  verifyPermission,
+  verifyCommentPermission,
 };
