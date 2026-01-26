@@ -20,6 +20,18 @@ commentRouter.post(
   commentController.reply
 );
 
-commentRouter.patch("/update", verifyToken, commentController.update);
+commentRouter.patch(
+  "/update",
+  verifyToken,
+  verifyCommentPermission,
+  commentController.update
+);
+
+commentRouter.delete(
+  "/delete",
+  verifyToken,
+  verifyCommentPermission,
+  commentController.remove
+);
 
 module.exports = commentRouter;

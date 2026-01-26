@@ -67,6 +67,26 @@ class CommentController {
       };
     }
   }
+
+  async remove(ctx, next) {
+    const { commentId } = ctx.request.body;
+    if (!commentId) {
+      return ctx.app.emit("error", new Error(errorType.BAD_REQUEST), ctx);
+    }
+
+    try {
+      await commentService.remove({ commentId });
+      ctx.body = {
+        code: 200,
+        message: "删除评论成功!!",
+      };
+    } catch (error) {
+      ctx.body = {
+        code: 500,
+        message: error.message,
+      };
+    }
+  }
 }
 
 module.exports = new CommentController();

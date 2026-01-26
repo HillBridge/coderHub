@@ -7,7 +7,7 @@ class CommentService {
     return result;
   }
 
-  async checkMomentPermission(momentId) {
+  async checkCommentPermission(momentId) {
     const statement = `SELECT * FROM moments WHERE id = ?`;
     const [result] = await pool.execute(statement, [momentId]);
     return result;
@@ -27,6 +27,12 @@ class CommentService {
   async update({ commentId, content }) {
     const statement = `UPDATE comments SET content = ? WHERE id = ?`;
     const [result] = await pool.execute(statement, [content, commentId]);
+    return result;
+  }
+
+  async remove({ commentId }) {
+    const statement = `DELETE FROM comments WHERE id = ?`;
+    const [result] = await pool.execute(statement, [commentId]);
     return result;
   }
 }

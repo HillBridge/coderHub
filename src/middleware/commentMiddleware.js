@@ -2,15 +2,15 @@ const errorType = require("../constants/errorType");
 const commentService = require("../service/commentService");
 
 const verifyCommentPermission = async (ctx, next) => {
-  const { momentId } = ctx.request.body;
+  const { commentId } = ctx.request.body;
   const { id: userId } = ctx.user;
 
-  if (!momentId || !userId) {
+  if (!commentId || !userId) {
     return ctx.app.emit("error", new Error(errorType.BAD_REQUEST), ctx);
   }
   // 判断动态是否存在
   try {
-    const result = await commentService.checkCommentPermission(momentId);
+    const result = await commentService.checkCommentPermission(commentId);
     if (result.length < 1) {
       return ctx.app.emit("error", new Error(errorType.NO_PERMISSION), ctx);
     }
