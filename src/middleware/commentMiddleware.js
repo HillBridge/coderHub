@@ -8,7 +8,7 @@ const verifyCommentPermission = async (ctx, next) => {
   if (!commentId || !userId) {
     return ctx.app.emit("error", new Error(errorType.BAD_REQUEST), ctx);
   }
-  // 判断动态是否存在
+  // 判断评论是否存在, 然后再对评论进行评论
   try {
     const result = await commentService.checkCommentPermission(commentId);
     if (result.length < 1) {

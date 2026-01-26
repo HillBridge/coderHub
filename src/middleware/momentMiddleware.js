@@ -2,7 +2,7 @@ const errorType = require("../constants/errorType");
 const momentService = require("../service/momentService");
 
 const verifyMomentPermission = async (ctx, next) => {
-  const { id: momentId } = ctx.request.body;
+  const { momentId } = ctx.request.body;
   const { id: userId } = ctx.user;
 
   if (!momentId || !userId) {

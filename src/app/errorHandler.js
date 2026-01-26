@@ -1,7 +1,8 @@
 const errorTypes = require("../constants/errorType");
 
 const errorHandler = (err, ctx) => {
-  console.error("错误信息", err.message);
+  const { method, url } = ctx.request;
+
   let status = 200;
   let code = 500;
   let message = "NOT FOUND";
@@ -36,6 +37,8 @@ const errorHandler = (err, ctx) => {
     code,
     message,
   };
+
+  console.error("接口错误信息", `${method} ${url} ${message}`);
 };
 
 module.exports = errorHandler;

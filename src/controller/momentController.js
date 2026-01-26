@@ -78,7 +78,7 @@ class MomentController {
   }
 
   async update(ctx, next) {
-    const { id: momentId, content } = ctx.request.body;
+    const { momentId, content } = ctx.request.body;
     if (!momentId || !content) {
       return ctx.app.emit("error", new Error(errorType.BAD_REQUEST), ctx);
     }
@@ -98,7 +98,7 @@ class MomentController {
   }
 
   async remove(ctx, next) {
-    const { id: momentId } = ctx.request.body;
+    const { momentId } = ctx.request.body;
     if (!momentId) {
       return ctx.app.emit("error", new Error(errorType.BAD_REQUEST), ctx);
     }

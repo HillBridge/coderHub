@@ -5,17 +5,19 @@ const commentRouter = new Router({
 const commentController = require("../controller/commentController");
 const { verifyToken } = require("../middleware/authMiddleware");
 const { verifyCommentPermission } = require("../middleware/commentMiddleware");
+const { verifyMomentPermission } = require("../middleware/momentMiddleware");
 
 commentRouter.post(
   "/create",
   verifyToken,
-  verifyCommentPermission,
+  verifyMomentPermission,
   commentController.create
 );
 
 commentRouter.post(
   "/reply",
   verifyToken,
+  verifyMomentPermission,
   verifyCommentPermission,
   commentController.reply
 );

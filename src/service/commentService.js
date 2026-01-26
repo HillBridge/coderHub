@@ -8,7 +8,7 @@ class CommentService {
   }
 
   async checkCommentPermission(momentId) {
-    const statement = `SELECT * FROM moments WHERE id = ?`;
+    const statement = `SELECT * FROM comments WHERE id = ?`;
     const [result] = await pool.execute(statement, [momentId]);
     return result;
   }
