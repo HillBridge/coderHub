@@ -1,5 +1,6 @@
 const momentService = require("../service/momentService");
 const errorType = require("../constants/errorType");
+const labelService = require("../service/labelService");
 
 class MomentController {
   async create(ctx, next) {
@@ -108,6 +109,33 @@ class MomentController {
       ctx.body = {
         code: 200,
         message: "删除动态成功!!",
+      };
+    } catch (error) {
+      ctx.body = {
+        code: 500,
+        message: error.message,
+      };
+    }
+  }
+
+  async addLabelToMoment(ctx, next) {
+    const { momentId } = ctx.request.body;
+    const { labels } = ctx;
+
+    try {
+      for (const label of labels) {
+        const isLabelExists = await labelService.isLabelExists({
+          momentId,
+          labelId: label.id,
+        });
+        if (isLabelExists.length > 0) {
+          continue;
+        }
+        await momentService.addLabelToMoment({ momentId, labelId: label.id });
+      }
+      ctx.body = {
+        code: 200,
+        message: "添加标签成功!!",
       };
     } catch (error) {
       ctx.body = {

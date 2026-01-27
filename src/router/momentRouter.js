@@ -5,6 +5,7 @@ const momentRouter = new Router({
 const momentController = require("../controller/momentController");
 const { verifyToken } = require("../middleware/authMiddleware");
 const { verifyMomentPermission } = require("../middleware/momentMiddleware");
+const { verifyLabelPermission } = require("../middleware/labelMiddleware");
 
 momentRouter.post("/create", verifyToken, momentController.create);
 
@@ -24,6 +25,14 @@ momentRouter.delete(
   verifyToken,
   verifyMomentPermission,
   momentController.remove
+);
+
+momentRouter.post(
+  "/addLabels",
+  verifyToken,
+  verifyMomentPermission,
+  verifyLabelPermission,
+  momentController.addLabelToMoment
 );
 
 module.exports = momentRouter;

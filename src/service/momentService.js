@@ -49,6 +49,12 @@ class MomentService {
     const [result] = await pool.execute(statement, [momentId]);
     return result;
   }
+
+  async addLabelToMoment({ momentId, labelId }) {
+    const statement = `INSERT INTO moments_to_labels (moment_id, label_id) VALUES (?, ?)`;
+    const [result] = await pool.execute(statement, [momentId, labelId]);
+    return result;
+  }
 }
 
 module.exports = new MomentService();
