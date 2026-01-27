@@ -1,8 +1,5 @@
 const pool = require("../app/database");
 
-const sqlFragment = `SELECT m.id id, m.content content, m.createTime createTime, JSON_OBJECT('userId', u.id, 'userName', u.username) userInfo 
-      FROM moments m LEFT JOIN users u ON m.user_id = u.id`;
-
 class MomentService {
   async create({ id, content }) {
     const statement = `INSERT INTO moments (content, user_id) VALUES (?, ?)`;
@@ -11,7 +8,16 @@ class MomentService {
   }
 
   async getMomentById({ id }) {
-    const statement = `${sqlFragment} WHERE user_id = ?`;
+    const statement = `SELECT m.id id, m.content content, m.createTime createTime, 
+			JSON_OBJECT('userId', u.id, 'userName', u.username) userInfo,
+			JSON_ARRAYAGG(
+				JSON_OBJECT('id', c.id, 'content', c.content, 'commentId', c.comment_id)
+			) comments
+      FROM moments m 
+			LEFT JOIN users u ON m.user_id = u.id 
+			LEFT JOIN comments c ON c.moment_id = m.id
+			WHERE m.id = ?
+			GROUP BY m.id`;
     const [result] = await pool.execute(statement, [id]);
 
     return result;
