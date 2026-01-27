@@ -87,6 +87,27 @@ class CommentController {
       };
     }
   }
+
+  async getListByMomentId(ctx, next) {
+    const { momentId } = ctx.query;
+    if (!momentId) {
+      return ctx.app.emit("error", new Error(errorType.BAD_REQUEST), ctx);
+    }
+    try {
+      const result = await commentService.getListByMomentId({ momentId });
+      ctx.body = {
+        code: 200,
+        message: "获取评论详情成功!!",
+        data: result,
+        total: result.length,
+      };
+    } catch (error) {
+      ctx.body = {
+        code: 500,
+        message: error.message,
+      };
+    }
+  }
 }
 
 module.exports = new CommentController();

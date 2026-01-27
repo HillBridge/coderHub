@@ -35,6 +35,12 @@ class CommentService {
     const [result] = await pool.execute(statement, [commentId]);
     return result;
   }
+
+  async getListByMomentId({ momentId }) {
+    const statement = `SELECT * FROM comments WHERE moment_id = ?`;
+    const [result] = await pool.execute(statement, [momentId]);
+    return result;
+  }
 }
 
 module.exports = new CommentService();

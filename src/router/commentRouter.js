@@ -36,4 +36,6 @@ commentRouter.delete(
   commentController.remove
 );
 
+commentRouter.get("/list", verifyToken, commentController.getListByMomentId);
+
 module.exports = commentRouter;
