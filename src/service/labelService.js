@@ -24,6 +24,12 @@ class LabelService {
     const [result] = await pool.execute(statement, [momentId, labelId]);
     return result;
   }
+
+  async getLabelList({ pageNum, pageSize }) {
+    const statement = `SELECT * FROM labels LIMIT ?, ?`;
+    const [result] = await pool.execute(statement, [pageNum, pageSize]);
+    return result;
+  }
 }
 
 module.exports = new LabelService();
