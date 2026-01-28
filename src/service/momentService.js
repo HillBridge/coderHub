@@ -18,14 +18,23 @@ class MomentService {
         m.content content, 
         m.createTime createTime, 
         JSON_OBJECT('userId', u.id, 'userName', u.username) userInfo,
-        (SELECT JSON_ARRAYAGG(
-            JSON_OBJECT('id', c.id, 'content', c.content, 'commentId', c.comment_id)
-        ) FROM comments c WHERE c.moment_id = m.id) AS comments,
-        (SELECT JSON_ARRAYAGG(
-            JSON_OBJECT('id', l.id, 'name', l.name)
-        ) FROM moments_to_labels ml 
-          JOIN labels l ON ml.label_id = l.id 
-          WHERE ml.moment_id = m.id) AS labels
+        
+        COALESCE(
+            (SELECT JSON_ARRAYAGG(
+                JSON_OBJECT('id', c.id, 'content', c.content, 'commentId', c.comment_id)
+            ) FROM comments c WHERE c.moment_id = m.id), 
+            JSON_ARRAY()
+        ) AS comments,
+        
+        COALESCE(
+            (SELECT JSON_ARRAYAGG(
+                JSON_OBJECT('id', l.id, 'name', l.name)
+            ) FROM moments_to_labels ml 
+              JOIN labels l ON ml.label_id = l.id 
+              WHERE ml.moment_id = m.id), 
+            JSON_ARRAY()
+        ) AS labels
+
     FROM moments m 
     LEFT JOIN users u ON m.user_id = u.id 
     WHERE m.id = ?;`;
