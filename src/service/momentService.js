@@ -8,16 +8,27 @@ class MomentService {
   }
 
   async getMomentById({ id }) {
-    const statement = `SELECT m.id id, m.content content, m.createTime createTime, 
-			JSON_OBJECT('userId', u.id, 'userName', u.username) userInfo,
-			JSON_ARRAYAGG(
-				JSON_OBJECT('id', c.id, 'content', c.content, 'commentId', c.comment_id)
-			) comments
-      FROM moments m 
-			LEFT JOIN users u ON m.user_id = u.id 
-			LEFT JOIN comments c ON c.moment_id = m.id
-			WHERE m.id = ?
-			GROUP BY m.id`;
+    // 子查询来解决查询重复问题以及JOIN的干扰
+    // 子查询: 查询每个动态的评论数量
+    // 子查询: 查询每个动态的标签数量
+    // 在一个sql中查询不同表的不同数据, 可以通过子查询的方式查询更加清晰和安全
+    const statement = `
+    SELECT 
+        m.id id, 
+        m.content content, 
+        m.createTime createTime, 
+        JSON_OBJECT('userId', u.id, 'userName', u.username) userInfo,
+        (SELECT JSON_ARRAYAGG(
+            JSON_OBJECT('id', c.id, 'content', c.content, 'commentId', c.comment_id)
+        ) FROM comments c WHERE c.moment_id = m.id) AS comments,
+        (SELECT JSON_ARRAYAGG(
+            JSON_OBJECT('id', l.id, 'name', l.name)
+        ) FROM moments_to_labels ml 
+          JOIN labels l ON ml.label_id = l.id 
+          WHERE ml.moment_id = m.id) AS labels
+    FROM moments m 
+    LEFT JOIN users u ON m.user_id = u.id 
+    WHERE m.id = ?;`;
     const [result] = await pool.execute(statement, [id]);
 
     return result;
