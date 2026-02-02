@@ -17,6 +17,18 @@ class FileService {
     const [result] = await pool.execute(statement, [userId]);
     return result;
   }
+
+  async saveFileInfo({ filename, mimetype, size, userId, momentId }) {
+    const statement = `INSERT INTO files (fileName, mimeType, size, user_id, moment_id) VALUES (?, ?, ?, ?, ?)`;
+    const [result] = await pool.execute(statement, [
+      filename,
+      mimetype,
+      size,
+      userId,
+      momentId,
+    ]);
+    return result;
+  }
 }
 
 module.exports = new FileService();

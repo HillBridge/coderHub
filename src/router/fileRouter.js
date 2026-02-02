@@ -3,7 +3,10 @@ const fileRouter = new Router({
   prefix: "/upload",
 });
 
-const { handleUploadAvatar } = require("../middleware/fileMiddleware");
+const {
+  handleUploadAvatar,
+  handleUploadFile,
+} = require("../middleware/fileMiddleware");
 const { verifyToken } = require("../middleware/authMiddleware");
 
 const fileController = require("../controller/fileController");
@@ -13,6 +16,13 @@ fileRouter.post(
   verifyToken,
   handleUploadAvatar,
   fileController.saveAvatarInfo
+);
+
+fileRouter.post(
+  "/file",
+  verifyToken,
+  handleUploadFile,
+  fileController.saveFileInfo
 );
 
 module.exports = fileRouter;

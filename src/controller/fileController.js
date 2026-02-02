@@ -59,6 +59,40 @@ class FileController {
       };
     }
   }
+
+  async saveFileInfo(ctx, next) {
+    const files = ctx.request.files;
+    const { id: userId } = ctx.user;
+    const { momentId } = ctx.query;
+
+    if (!files || files.length === 0 || !momentId) {
+      return ctx.app.emit("error", new Error(errorType.BAD_REQUEST), ctx);
+    }
+
+    try {
+      for (const file of files) {
+        const { filename, mimetype, size } = file;
+        // 保存文件信息到file表
+        await fileService.saveFileInfo({
+          filename,
+          mimetype,
+          size,
+          userId,
+          momentId,
+        });
+      }
+
+      ctx.body = {
+        code: 200,
+        message: "上传文件成功",
+      };
+    } catch (error) {
+      ctx.body = {
+        code: 500,
+        message: error.message,
+      };
+    }
+  }
 }
 
 module.exports = new FileController();

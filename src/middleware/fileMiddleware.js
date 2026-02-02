@@ -1,9 +1,12 @@
 const multer = require("@koa/multer");
 
-const upload = multer({ dest: "./uploads/avatar" });
+const uploadAvatar = multer({ dest: "./uploads/avatar" });
+const uploadFile = multer({ dest: "./uploads/file" });
 
-const handleUploadAvatar = upload.single("avatar");
+const handleUploadAvatar = uploadAvatar.single("avatar");
+const handleUploadFile = uploadFile.array("files", 10);
 
 module.exports = {
   handleUploadAvatar,
+  handleUploadFile,
 };

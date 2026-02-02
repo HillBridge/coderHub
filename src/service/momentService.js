@@ -75,6 +75,12 @@ class MomentService {
     const [result] = await pool.execute(statement, [momentId, labelId]);
     return result;
   }
+
+  async updateMomentFile({ momentId, filePath }) {
+    const statement = `UPDATE moments SET fileUrl = ? WHERE id = ?`;
+    const [result] = await pool.execute(statement, [filePath, momentId]);
+    return result;
+  }
 }
 
 module.exports = new MomentService();
