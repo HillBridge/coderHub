@@ -12,6 +12,7 @@ const PRIVATE_KEY = fs.readFileSync(
 );
 
 const {
+  APP_HOST,
   APP_PORT,
   MYSQL_HOST,
   MYSQL_PORT,
@@ -21,6 +22,7 @@ const {
 } = process.env;
 
 module.exports = {
+  APP_HOST,
   APP_PORT,
   MYSQL_HOST,
   MYSQL_PORT,

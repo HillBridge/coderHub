@@ -1,6 +1,7 @@
 const fs = require("fs");
 const path = require("path");
 const fileService = require("../service/fileService");
+const userService = require("../service/userService");
 const errorType = require("../constants/errorType");
 
 class FileController {
@@ -12,6 +13,14 @@ class FileController {
     // 数据库操作
     try {
       await fileService.saveAvatarInfo({ filename, mimetype, size, userId });
+
+      const { APP_HOST, APP_PORT } = require("../app/config");
+
+      const filePath = `${APP_HOST}:${APP_PORT}/user/avatar/${userId}`;
+
+      await userService.updateUserAvatar({ userId, filePath });
+
+      // 返回结果
       ctx.body = {
         code: 200,
         message: "上传头像成功",

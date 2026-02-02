@@ -24,6 +24,12 @@ class UserService {
     const [result] = await pool.execute(statement, [userId]);
     return result;
   }
+
+  async updateUserAvatar({ userId, filePath }) {
+    const statement = `UPDATE users SET avatarUrl = ? WHERE id = ?`;
+    const [result] = await pool.execute(statement, [filePath, userId]);
+    return result;
+  }
 }
 
 module.exports = new UserService();
