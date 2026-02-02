@@ -17,7 +17,7 @@ class MomentService {
         m.id id, 
         m.content content, 
         m.createTime createTime, 
-        JSON_OBJECT('userId', u.id, 'userName', u.username) userInfo,
+        JSON_OBJECT('userId', u.id, 'userName', u.username, 'avatarUrl', u.avatarUrl) userInfo,
         
         COALESCE(
             (SELECT JSON_ARRAYAGG(
