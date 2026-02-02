@@ -4,9 +4,15 @@ const fileRouter = new Router({
 });
 
 const { handleUploadAvatar } = require("../middleware/fileMiddleware");
-
 const { verifyToken } = require("../middleware/authMiddleware");
 
-fileRouter.post("/avatar", verifyToken, handleUploadAvatar);
+const fileController = require("../controller/fileController");
+
+fileRouter.post(
+  "/avatar",
+  verifyToken,
+  handleUploadAvatar,
+  fileController.saveAvatarInfo
+);
 
 module.exports = fileRouter;
