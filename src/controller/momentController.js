@@ -150,17 +150,39 @@ class MomentController {
 
   async getFileInfo(ctx, next) {
     const { filename } = ctx.params;
+    let { size } = ctx.query;
+
     if (!filename) {
       return ctx.app.emit("error", new Error(errorType.BAD_REQUEST), ctx);
     }
+
+    const sizeArray = ["320", "640", "1280"];
+    if (!sizeArray.includes(size)) {
+      size = 320;
+    }
+
     try {
       const result = await fileService.getFileInfoByFilename({ filename });
       if (result.length < 1) {
         return ctx.app.emit("error", new Error(errorType.FILE_NOT_FOUND), ctx);
       }
-      const { mimeType } = result[0];
+
+      const { mimeType, fileName } = result[0];
+
+      let ext = "";
+      if (!ext) {
+        if (mimeType === "image/jpeg") ext = ".jpg";
+        else if (mimeType === "image/png") ext = ".png";
+        else if (mimeType === "image/gif") ext = ".gif";
+        else ext = ".jpg"; // 默认保底为 jpg
+      }
       // 获取头像文件路径
-      const filePath = path.join(__dirname, "../../uploads/file", filename);
+      const filePath = path.join(
+        __dirname,
+        "../../uploads/file",
+        `${fileName}-${size}${ext}`
+      );
+
       // 创建读取流
       const fileBuffer = fs.createReadStream(filePath);
       // 设置响应头类型
