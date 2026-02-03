@@ -35,4 +35,6 @@ momentRouter.post(
   momentController.addLabelToMoment
 );
 
+momentRouter.get("/images/:filename", momentController.getFileInfo);
+
 module.exports = momentRouter;

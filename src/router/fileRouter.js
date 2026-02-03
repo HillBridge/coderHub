@@ -6,6 +6,7 @@ const fileRouter = new Router({
 const {
   handleUploadAvatar,
   handleUploadFile,
+  handleFileResize,
 } = require("../middleware/fileMiddleware");
 const { verifyToken } = require("../middleware/authMiddleware");
 
@@ -22,6 +23,7 @@ fileRouter.post(
   "/file",
   verifyToken,
   handleUploadFile,
+  handleFileResize,
   fileController.saveFileInfo
 );
 

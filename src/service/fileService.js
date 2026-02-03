@@ -29,6 +29,12 @@ class FileService {
     ]);
     return result;
   }
+
+  async getFileInfoByFilename({ filename }) {
+    const statement = `SELECT * FROM files WHERE fileName = ?`;
+    const [result] = await pool.execute(statement, [filename]);
+    return result;
+  }
 }
 
 module.exports = new FileService();

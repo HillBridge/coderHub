@@ -33,7 +33,13 @@ class MomentService {
               JOIN labels l ON ml.label_id = l.id 
               WHERE ml.moment_id = m.id), 
             JSON_ARRAY()
-        ) AS labels
+        ) AS labels,
+
+        COALESCE(
+            (SELECT JSON_ARRAYAGG(CONCAT('http://localhost:3003/moment/images/', files.fileName)) FROM files 
+              WHERE files.moment_id = m.id), 
+            JSON_ARRAY()
+        ) AS images
 
     FROM moments m 
     LEFT JOIN users u ON m.user_id = u.id 

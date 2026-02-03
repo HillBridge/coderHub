@@ -1,4 +1,7 @@
+const fs = require("fs");
+const path = require("path");
 const momentService = require("../service/momentService");
+const fileService = require("../service/fileService");
 const errorType = require("../constants/errorType");
 const labelService = require("../service/labelService");
 
@@ -137,6 +140,33 @@ class MomentController {
         code: 200,
         message: "添加标签成功!!",
       };
+    } catch (error) {
+      ctx.body = {
+        code: 500,
+        message: error.message,
+      };
+    }
+  }
+
+  async getFileInfo(ctx, next) {
+    const { filename } = ctx.params;
+    if (!filename) {
+      return ctx.app.emit("error", new Error(errorType.BAD_REQUEST), ctx);
+    }
+    try {
+      const result = await fileService.getFileInfoByFilename({ filename });
+      if (result.length < 1) {
+        return ctx.app.emit("error", new Error(errorType.FILE_NOT_FOUND), ctx);
+      }
+      const { mimeType } = result[0];
+      // 获取头像文件路径
+      const filePath = path.join(__dirname, "../../uploads/file", filename);
+      // 创建读取流
+      const fileBuffer = fs.createReadStream(filePath);
+      // 设置响应头类型
+      ctx.response.set("content-type", mimeType);
+      // 直接将流式数据返回给客户端
+      ctx.body = fileBuffer;
     } catch (error) {
       ctx.body = {
         code: 500,
